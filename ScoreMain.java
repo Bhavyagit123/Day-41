@@ -1,0 +1,36 @@
+package com.codegnan.multithreading;
+
+import java.util.Scanner;
+
+public class ScoreMain {
+	public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+
+        Score sharedScore = new Score();
+
+        // Thread 1
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < n; i++) {
+                sharedScore.increment();
+            }
+        });
+
+        // Thread 2
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < n; i++) {
+                sharedScore.increment();
+            }
+        });
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        // Final output
+        System.out.println(sharedScore.getScore());
+    }
+
+}
